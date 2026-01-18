@@ -249,6 +249,202 @@ result = agent.process_request({
 })
 ```
 
+# 非技术人员模板使用指南
+
+如果您是产品经理或非技术人员，您可以使用以下方式管理和使用模板，无需编写任何Python代码。
+
+## 1. 使用模板管理命令行工具
+
+我们提供了一个简单的命令行工具，让您可以轻松管理模板：
+
+```bash
+# 查看所有可用命令
+python -m src.utils.template_manager --help
+```
+
+### 1.1 列出所有模板
+
+```bash
+python -m src.utils.template_manager list
+```
+
+### 1.2 查看模板详情
+
+```bash
+python -m src.utils.template_manager show default
+```
+
+### 1.3 复制模板
+
+```bash
+python -m src.utils.template_manager copy client client_satisfaction
+```
+
+### 1.4 保存模板为JSON文件
+
+```bash
+python -m src.utils.template_manager save client_satisfaction templates/client_satisfaction.json
+```
+
+### 1.5 从JSON文件加载模板
+
+```bash
+python -m src.utils.template_manager load templates/client_satisfaction.json
+```
+
+### 1.6 删除模板
+
+```bash
+python -m src.utils.template_manager delete old_template
+```
+
+## 2. 编辑JSON模板文件
+
+您可以使用任何文本编辑器（如记事本、TextEdit、VS Code等）编辑JSON模板文件。
+
+### 2.1 JSON模板结构
+
+```json
+{
+  "name": "模板名称",
+  "description": "模板描述",
+  "tasks": {
+    "任务名称": {
+      "参数1": "值1",
+      "参数2": "值2"
+    }
+  }
+}
+```
+
+### 2.2 常用任务参数
+
+#### collect_data（收集数据）
+- `delay`: 延迟时间（秒）
+- `message`: 执行消息
+- `sources`: 数据源列表
+
+#### clean_data（清洗数据）
+- `delay`: 延迟时间（秒）
+- `message`: 执行消息
+- `min_duplicates`: 最少重复数据量
+- `max_duplicates`: 最多重复数据量
+
+#### analyze_data（分析数据）
+- `delay`: 延迟时间（秒）
+- `message`: 执行消息
+- `min_insights`: 最少洞察数量
+- `max_insights`: 最多洞察数量
+- `min_accuracy`: 最低准确率
+
+#### generate_report（生成报告）
+- `delay`: 延迟时间（秒）
+- `message`: 执行消息
+- `default_save_to_file`: 是否自动保存
+- `default_output_dir`: 保存目录
+- `default_file_extension`: 文件扩展名
+
+## 3. 产品经理快速入门指南
+
+### 场景：创建季度销售报告模板
+
+1. **复制基础模板**
+   ```bash
+   python -m src.utils.template_manager copy detailed quarterly_sales_report
+   ```
+
+2. **导出为JSON文件**
+   ```bash
+   python -m src.utils.template_manager save quarterly_sales_report templates/quarterly_sales_report.json
+   ```
+
+3. **编辑JSON文件**
+   使用文本编辑器打开 `templates/quarterly_sales_report.json`，修改配置：
+
+   ```json
+   {
+     "name": "quarterly_sales_report",
+     "description": "季度销售报告模板",
+     "tasks": {
+       "collect_data": {
+         "delay": 2.0,
+         "message": "收集季度销售数据...",
+         "sources": ["销售数据库", "CRM系统", "ERP系统"]
+       },
+       "analyze_data": {
+         "delay": 3.0,
+         "message": "分析季度销售趋势...",
+         "min_insights": 10,
+         "max_insights": 20,
+         "min_accuracy": 0.95
+       },
+       "generate_report": {
+         "delay": 2.0,
+         "message": "生成季度销售报告...",
+         "default_save_to_file": true,
+         "default_output_dir": "quarterly_reports",
+         "default_file_extension": ".md"
+       }
+     }
+   }
+   ```
+
+4. **加载修改后的模板**
+   ```bash
+   python -m src.utils.template_manager load templates/quarterly_sales_report.json
+   ```
+
+5. **使用模板执行任务**
+   请开发人员使用以下参数调用AI Agent：
+   ```json
+   {
+     "type": "analyze_data",
+     "params": {
+       "query": "2024年Q3销售分析",
+       "template_name": "quarterly_sales_report"
+     }
+   }
+   ```
+
+## 4. 模板最佳实践（产品经理版）
+
+### 4.1 模板命名规范
+- 使用清晰的业务术语（如 `monthly_marketing_report`）
+- 包含时间维度（如 `weekly_performance`）
+- 区分受众（如 `internal_analysis`, `client_presentation`）
+
+### 4.2 配置建议
+- **数据收集**：根据数据源的复杂度调整延迟时间
+- **数据分析**：为正式报告设置更高的洞察数量和准确率要求
+- **报告生成**：开启自动保存功能，设置合理的保存目录
+
+### 4.3 版本管理
+- 定期备份模板文件
+- 在文件名中包含版本号（如 `client_template_v2.json`）
+- 记录模板的变更历史
+
+### 4.4 协作建议
+- 与开发人员共同确定模板的基础结构
+- 定期与团队成员 review 模板配置
+- 为复杂模板编写使用说明
+
+## 5. 常见问题解答（产品经理版）
+
+### Q: 我需要安装什么软件才能编辑JSON文件？
+A: 您可以使用任何文本编辑器，如记事本（Windows）、TextEdit（Mac）或免费的VS Code编辑器。
+
+### Q: 如何测试我的模板是否正常工作？
+A: 请开发人员使用少量测试数据运行您的模板，确认输出结果符合预期。
+
+### Q: 我可以在模板中添加新的任务吗？
+A: 目前模板只能配置现有任务的参数，如果需要添加新任务，请联系开发人员。
+
+### Q: 模板文件应该保存在哪里？
+A: 建议将模板文件保存在项目的 `templates` 目录中，便于统一管理。
+
+### Q: 如何与团队成员共享模板？
+A: 您可以将JSON模板文件通过邮件、文档系统或版本控制系统（如Git）与团队共享。
+
 ## 常见问题
 
 ### Q: 我可以创建多少个自定义模板？

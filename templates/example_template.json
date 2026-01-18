@@ -1,0 +1,39 @@
+{
+  "name": "product_manager_template",
+  "description": "产品经理专用的客户满意度分析模板",
+  "tasks": {
+    "collect_data": {
+      "delay": 1.5,
+      "message": "收集客户满意度数据...",
+      "sources": ["CRM系统", "客户调查", "在线评论"]
+    },
+    "clean_data": {
+      "delay": 0.8,
+      "message": "清洗客户数据...",
+      "min_duplicates": 0,
+      "max_duplicates": 30,
+      "min_invalid": 0,
+      "max_invalid": 10
+    },
+    "analyze_data": {
+      "delay": 2.0,
+      "message": "分析客户满意度数据...",
+      "min_insights": 8,
+      "max_insights": 15,
+      "min_accuracy": 0.95,
+      "max_accuracy": 0.99
+    },
+    "generate_report": {
+      "delay": 1.8,
+      "message": "生成客户满意度报告...",
+      "default_save_to_file": true,
+      "default_output_dir": "client_reports",
+      "default_file_extension": ".md"
+    },
+    "send_email": {
+      "delay": 1.0,
+      "message": "发送报告给相关部门...",
+      "default_subject": "客户满意度分析报告"
+    }
+  }
+}

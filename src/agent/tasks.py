@@ -1,6 +1,7 @@
 import time
 import random
 import os
+import json
 
 class TaskLibrary:
     """
@@ -305,6 +306,119 @@ class TaskLibrary:
         
         del cls._task_templates[template_name]
         return True
+    
+    @classmethod
+    def load_template_from_file(cls, file_path):
+        """
+        从JSON文件加载模板
+        
+        Args:
+            file_path (str): JSON文件路径
+        
+        Returns:
+            bool: 是否成功加载
+        """
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            # 验证文件格式
+            if 'name' not in data:
+                raise ValueError("模板文件缺少'name'字段")
+            if 'tasks' not in data:
+                raise ValueError("模板文件缺少'tasks'字段")
+            
+            # 加载模板
+            template_name = data['name']
+            cls._task_templates[template_name] = data['tasks']
+            
+            print(f"模板 {template_name} 已从 {file_path} 加载成功")
+            return True
+        except Exception as e:
+            print(f"加载模板失败: {e}")
+            return False
+    
+    @classmethod
+    def save_template_to_file(cls, template_name, file_path):
+        """
+        将模板保存为JSON文件
+        
+        Args:
+            template_name (str): 模板名称
+            file_path (str): 输出文件路径
+        
+        Returns:
+            bool: 是否成功保存
+        """
+        try:
+            if template_name not in cls._task_templates:
+                raise ValueError(f"模板 {template_name} 不存在")
+            
+            # 准备保存的数据
+            data = {
+                'name': template_name,
+                'description': f"{template_name} 任务模板",
+                'tasks': cls._task_templates[template_name]
+            }
+            
+            # 创建目录（如果不存在）
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            
+            # 保存文件
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+            
+            print(f"模板 {template_name} 已保存到 {file_path}")
+            return True
+        except Exception as e:
+            print(f"保存模板失败: {e}")
+            return False
+    
+    @classmethod
+    def load_templates_from_directory(cls, directory):
+        """
+        从目录加载所有JSON模板文件
+        
+        Args:
+            directory (str): 模板文件目录
+        
+        Returns:
+            dict: 加载结果统计
+        """
+        result = {
+            'total_files': 0,
+            'loaded': 0,
+            'failed': 0,
+            'errors': []
+        }
+        
+        try:
+            if not os.path.exists(directory):
+                raise ValueError(f"目录 {directory} 不存在")
+            
+            # 获取所有JSON文件
+            json_files = [f for f in os.listdir(directory) if f.endswith('.json')]
+            result['total_files'] = len(json_files)
+            
+            # 加载每个模板文件
+            for json_file in json_files:
+                file_path = os.path.join(directory, json_file)
+                try:
+                    if cls.load_template_from_file(file_path):
+                        result['loaded'] += 1
+                    else:
+                        result['failed'] += 1
+                        result['errors'].append(f"文件 {json_file} 加载失败")
+                except Exception as e:
+                    result['failed'] += 1
+                    result['errors'].append(f"文件 {json_file} 加载失败: {e}")
+            
+            print(f"从 {directory} 加载模板完成: 共 {result['total_files']} 个文件，成功 {result['loaded']} 个，失败 {result['failed']} 个")
+            return result
+        except Exception as e:
+            print(f"从目录加载模板失败: {e}")
+            result['errors'].append(str(e))
+            return result
 
     """
     AI Agent的预定义任务库
