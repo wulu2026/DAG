@@ -252,29 +252,29 @@ class TaskLibrary:
             
             # 生成数据分析报告
             report = f"""
-            # {query} 数据分析报告
-            
-            ## 数据摘要
-            - 总条目数: {total_entries}
-            - 数据来源: {sources}
-            - 查询关键词: {query}
-            
-            ## 关键洞察
-            """
+# {query} 数据分析报告
+
+## 数据摘要
+- 总条目数: {total_entries}
+- 数据来源: {sources}
+- 查询关键词: {query}
+
+## 关键洞察
+"""
             
             for i, insight in enumerate(insights, 1):
                 report += f"- 洞察 {i}: {insight}\n"
             
             report += f"""
-            
-            ## 质量指标
-            - 准确率: {metrics['accuracy']:.2f}
-            - 完整性: {metrics['completeness']:.2f}
-            - 相关性: {metrics['relevance']:.2f}
-            
-            ## 报告生成时间
-            {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}
-            """
+
+## 质量指标
+- 准确率: {metrics['accuracy']:.2f}
+- 完整性: {metrics['completeness']:.2f}
+- 相关性: {metrics['relevance']:.2f}
+
+## 报告生成时间
+{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}
+"""
         elif 'topic' in analysis:
             # 学习结果
             topic = analysis['topic']
@@ -287,39 +287,39 @@ class TaskLibrary:
             
             # 生成学习报告
             report = f"""
-            # {topic} 学习报告
-            
-            ## 学习摘要
-            - 学习主题: {topic}
-            - 学习的组件: {components}
-            - 学习的架构: {architecture}
-            - 知识来源: {sources}
-            - 知识水平: {knowledge_level}
-            
-            ## 关键概念
-            """
+# {topic} 学习报告
+
+## 学习摘要
+- 学习主题: {topic}
+- 学习的组件: {components}
+- 学习的架构: {architecture}
+- 知识来源: {sources}
+- 知识水平: {knowledge_level}
+
+## 关键概念
+"""
             
             for i, concept in enumerate(key_concepts, 1):
                 report += f"- 概念 {i}: {concept}\n"
             
             report += f"""
-            
-            ## 学习时间
-            {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(analysis['timestamp']))}
-            """
+
+## 学习时间
+{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(analysis['timestamp']))}
+"""
         else:
             # 默认报告格式
             report_title = "任务报告"
             report = f"""
-            # 任务报告
-            
-            ## 报告摘要
-            执行了一个任务，返回了以下结果:
-            {analysis}
-            
-            ## 报告生成时间
-            {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}
-            """
+# 任务报告
+
+## 报告摘要
+执行了一个任务，返回了以下结果:
+{analysis}
+
+## 报告生成时间
+{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}
+"""
         
         # 准备返回结果
         result = {
