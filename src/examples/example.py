@@ -3,9 +3,9 @@ from ..agent.agent import AIAgent
 # 初始化AI Agent
 agent = AIAgent()
 
-# 示例1: 数据分析请求
+# 示例1: 数据分析请求 (带可视化)
 print("=" * 60)
-print("示例1: 数据分析请求")
+print("示例1: 数据分析请求 (带可视化)")
 print("=" * 60)
 
 request1 = {
@@ -15,7 +15,7 @@ request1 = {
     }
 }
 
-result1 = agent.process_request(request1, parallel=True)
+result1 = agent.process_request(request1, parallel=True, visualize=True, visualize_filename="analyze_data_example")
 print("\n最终结果:")
 print(result1['final_result'])
 

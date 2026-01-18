@@ -1,5 +1,7 @@
+import time
 from ..dag.dag import DAG
 from ..dag.executor import DAGExecutor
+from ..dag.visualizer import DAGVisualizer
 from .tasks import TaskLibrary
 
 class AIAgent:
@@ -21,13 +23,15 @@ class AIAgent:
         self.name = name
         self.task_library = TaskLibrary()
     
-    def process_request(self, request, parallel=True):
+    def process_request(self, request, parallel=True, visualize=False, visualize_filename=None):
         """
         处理用户请求
         
         Args:
             request (dict): 用户请求，包含请求类型和参数
             parallel (bool, optional): 是否并行执行任务，默认True
+            visualize (bool, optional): 是否可视化DAG，默认False
+            visualize_filename (str, optional): 可视化文件名，默认None
         
         Returns:
             dict: 处理结果
@@ -49,6 +53,16 @@ class AIAgent:
         # 执行DAG
         executor = DAGExecutor(dag)
         results = executor.execute(parallel=parallel)
+        
+        # 可视化DAG
+        if visualize:
+            filename = visualize_filename or f"{request_type}_{int(time.time())}"
+            visualization_path = DAGVisualizer.visualize_with_results(
+                dag, 
+                results, 
+                filename=filename
+            )
+            print(f"DAG可视化图已保存到: {visualization_path}")
         
         # 返回最终结果
         final_result = results.get(final_node_id)
