@@ -1,0 +1,27 @@
+strict digraph analyze_data_example {
+	rankdir=TB size="8,10"
+	node [fontname=Arial fontsize=12 shape=rectangle style=filled]
+	edge [fontname=Arial fontsize=10]
+	collect_data [label="collect_data
+query
+sources
+data_points
+..." fillcolor="#90EE90"]
+	clean_data [label="clean_data
+query
+sources
+data_points
+..." fillcolor="#90EE90"]
+	analyze_data [label="analyze_data
+data_summary
+insights
+metrics" fillcolor="#90EE90"]
+	generate_report [label="generate_report
+
+            # 用户行为分析 数据分析报告
+            
+        ..." fillcolor="#90EE90"]
+	collect_data -> clean_data
+	clean_data -> analyze_data
+	analyze_data -> generate_report
+}

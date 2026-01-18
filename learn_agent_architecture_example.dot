@@ -1,0 +1,16 @@
+strict digraph learn_agent_architecture_example {
+	rankdir=TB size="8,10"
+	node [fontname=Arial fontsize=12 shape=rectangle style=filled]
+	edge [fontname=Arial fontsize=10]
+	learn_agent_architecture [label="learn_agent_architecture
+topic
+components
+architecture
+..." fillcolor="#90EE90"]
+	generate_report [label="generate_report
+
+            # 先进AI Agent架构 学习报告
+            
+    ..." fillcolor="#90EE90"]
+	learn_agent_architecture -> generate_report
+}

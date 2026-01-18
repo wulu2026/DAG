@@ -47,6 +47,8 @@ class AIAgent:
             dag, final_node_id = self._build_analyze_data_dag(params)
         elif request_type == 'send_report':
             dag, final_node_id = self._build_send_report_dag(params)
+        elif request_type == 'learn_agent_architecture':
+            dag, final_node_id = self._build_learn_architecture_dag(params)
         else:
             raise ValueError(f"不支持的请求类型: {request_type}")
         
@@ -200,3 +202,41 @@ class AIAgent:
         dag.add_edge('generate_report', 'send_email')  # 报告生成后发送邮件
         
         return dag, 'send_email'
+    
+    def _build_learn_architecture_dag(self, params):
+        """
+        构建学习AI Agent架构知识的DAG
+        
+        Args:
+            params (dict): 请求参数，包含topic和template_name等
+        
+        Returns:
+            tuple: (DAG对象, 最终节点ID)
+        """
+        topic = params.get('topic', 'AI Agent架构')
+        template_name = params.get('template_name', 'default')
+        
+        # 创建DAG
+        dag = DAG()
+        
+        # 添加节点
+        learn_node = dag.add_node(
+            'learn_agent_architecture',
+            data={
+                'func': self.task_library.learn_agent_architecture,
+                'args': (topic, template_name)
+            }
+        )
+        
+        report_node = dag.add_node(
+            'generate_report',
+            data={
+                'func': self.task_library.generate_report,
+                'args': (None, template_name)  # 将在执行时从依赖节点获取
+            }
+        )
+        
+        # 添加边（依赖关系）
+        dag.add_edge('learn_agent_architecture', 'generate_report')
+        
+        return dag, 'generate_report'

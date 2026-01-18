@@ -55,3 +55,59 @@ result3 = agent.process_request(request3, parallel=False)
 print("\n最终结果:")
 print(f"报告已发送到 {result3['final_result']['recipient']}")
 print(f"发送状态: {result3['final_result']['status']}")
+
+# 示例4: 学习AI Agent架构知识 (带可视化)
+print("\n" + "=" * 60)
+print("示例4: 学习AI Agent架构知识 (带可视化)")
+print("=" * 60)
+
+request4 = {
+    'type': 'learn_agent_architecture',
+    'params': {
+        'topic': '先进AI Agent架构',
+        'template_name': 'default'
+    }
+}
+
+result4 = agent.process_request(request4, parallel=True, visualize=True, visualize_filename="learn_agent_architecture_example")
+print("\n最终结果:")
+print(f"学习主题: {result4['results']['learn_agent_architecture']['topic']}")
+print(f"学习的组件: {', '.join(result4['results']['learn_agent_architecture']['components'])}")
+print(f"学习的架构: {result4['results']['learn_agent_architecture']['architecture']}")
+print("关键概念:")
+for i, concept in enumerate(result4['results']['learn_agent_architecture']['key_concepts'], 1):
+    print(f"{i}. {concept}")
+
+# 示例5: 使用自定义模板
+print("\n" + "=" * 60)
+print("示例5: 使用自定义模板")
+print("=" * 60)
+
+# 注册自定义模板
+from src.agent.tasks import TaskLibrary
+custom_template = {
+    'learn_agent_architecture': {
+        'delay': 1,
+        'message': '快速学习 {topic}...',
+        'components': ['智能感知', '自主决策', '高效执行'],
+        'architectures': ['轻量级架构', '分布式架构']
+    }
+}
+TaskLibrary.register_template('custom', custom_template)
+
+request5 = {
+    'type': 'learn_agent_architecture',
+    'params': {
+        'topic': '轻量级AI Agent架构',
+        'template_name': 'custom'
+    }
+}
+
+result5 = agent.process_request(request5, parallel=True)
+print("\n最终结果:")
+print(f"学习主题: {result5['results']['learn_agent_architecture']['topic']}")
+print(f"学习的组件: {', '.join(result5['results']['learn_agent_architecture']['components'])}")
+print(f"学习的架构: {result5['results']['learn_agent_architecture']['architecture']}")
+print("关键概念:")
+for i, concept in enumerate(result5['results']['learn_agent_architecture']['key_concepts'], 1):
+    print(f"{i}. {concept}")

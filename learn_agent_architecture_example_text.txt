@@ -1,0 +1,18 @@
+DAG文本可视化
+==================================================
+
+节点信息:
+- learn_agent_architecture (状态: completed)
+  结果: topic, components, architecture...
+- generate_report (状态: completed)
+  结果: 
+            # 先进AI Agent架构 学习报告
+            
+    ...
+
+依赖关系:
+- learn_agent_architecture -> generate_report
+
+执行顺序:
+1. learn_agent_architecture
+2. generate_report
