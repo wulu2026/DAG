@@ -53,6 +53,128 @@ class TaskLibrary:
                 'components': ['感知模块', '决策模块', '执行模块', '记忆模块', '学习模块'],
                 'architectures': ['分层架构', '模块化架构', '管道架构', '混合架构']
             }
+        },
+        # 快速处理模板 - 适合开发和测试
+        'fast': {
+            'collect_data': {
+                'delay': 0.2,
+                'message': '[快速] 收集关于 {query} 的数据...',
+                'sources': ['API']
+            },
+            'clean_data': {
+                'delay': 0.1,
+                'message': '[快速] 清洗数据...',
+                'min_duplicates': 0,
+                'max_duplicates': 10,
+                'min_invalid': 0,
+                'max_invalid': 5
+            },
+            'analyze_data': {
+                'delay': 0.3,
+                'message': '[快速] 分析数据...',
+                'min_insights': 3,
+                'max_insights': 5,
+                'min_accuracy': 0.8,
+                'max_accuracy': 0.9
+            },
+            'generate_report': {
+                'delay': 0.3,
+                'message': '[快速] 生成报告...',
+                'default_save_to_file': False
+            },
+            'send_email': {
+                'delay': 0.2,
+                'message': '[快速] 发送报告到 {recipient}...',
+                'default_subject': '[快速] 数据分析报告'
+            },
+            'save_to_database': {
+                'delay': 0.2,
+                'message': '[快速] 保存数据到 {table_name} 表...'
+            },
+            'learn_agent_architecture': {
+                'delay': 0.5,
+                'message': '[快速] 学习 AI Agent 架构知识...',
+                'components': ['感知模块', '执行模块'],
+                'architectures': ['分层架构']
+            }
+        },
+        # 详细分析模板 - 适合正式报告
+        'detailed': {
+            'collect_data': {
+                'delay': 2,
+                'message': '[详细] 收集关于 {query} 的数据...',
+                'sources': ['数据库', 'API', '文件系统', '外部数据源']
+            },
+            'clean_data': {
+                'delay': 1,
+                'message': '[详细] 清洗数据...',
+                'min_duplicates': 0,
+                'max_duplicates': 100,
+                'min_invalid': 0,
+                'max_invalid': 50
+            },
+            'analyze_data': {
+                'delay': 3,
+                'message': '[详细] 深入分析数据...',
+                'min_insights': 10,
+                'max_insights': 25,
+                'min_accuracy': 0.9,
+                'max_accuracy': 0.99
+            },
+            'generate_report': {
+                'delay': 2,
+                'message': '[详细] 生成详细报告...',
+                'default_save_to_file': True,
+                'default_output_dir': 'detailed_reports',
+                'default_file_extension': '.md'
+            },
+            'send_email': {
+                'delay': 1,
+                'message': '[详细] 发送详细报告到 {recipient}...',
+                'default_subject': '[详细] 数据分析报告'
+            },
+            'learn_agent_architecture': {
+                'delay': 4,
+                'message': '[详细] 深入学习 AI Agent 架构知识...',
+                'components': ['感知模块', '决策模块', '执行模块', '记忆模块', '学习模块', '元认知模块'],
+                'architectures': ['分层架构', '模块化架构', '管道架构', '混合架构', '自适应架构']
+            }
+        },
+        # 客户报告模板 - 适合客户交付
+        'client': {
+            'collect_data': {
+                'delay': 1.5,
+                'message': '收集客户数据...',
+                'sources': ['客户数据库', '客户API', '客户文件']
+            },
+            'clean_data': {
+                'delay': 0.8,
+                'message': '清洗客户数据...',
+                'min_duplicates': 0,
+                'max_duplicates': 30,
+                'min_invalid': 0,
+                'max_invalid': 10
+            },
+            'analyze_data': {
+                'delay': 2,
+                'message': '分析客户数据...',
+                'min_insights': 8,
+                'max_insights': 15,
+                'min_accuracy': 0.95,
+                'max_accuracy': 0.99
+            },
+            'generate_report': {
+                'delay': 2,
+                'message': '生成客户报告...',
+                'default_save_to_file': True,
+                'default_output_dir': 'client_reports',
+                'default_file_extension': '.md'
+            },
+            'send_email': {
+                'delay': 1,
+                'message': '发送客户报告到 {recipient}...',
+                'default_subject': '客户数据分析报告'
+            }
         }
     }
     
@@ -94,6 +216,95 @@ class TaskLibrary:
         """
         template = cls.get_template(template_name)
         return template.get(task_name, {})
+    
+    @classmethod
+    def get_all_templates(cls):
+        """
+        获取所有可用的模板名称
+        
+        Returns:
+            list: 模板名称列表
+        """
+        return list(cls._task_templates.keys())
+    
+    @classmethod
+    def get_template_info(cls, template_name='default'):
+        """
+        获取模板的详细信息，包括包含的任务和配置
+        
+        Args:
+            template_name (str, optional): 模板名称，默认'default'
+        
+        Returns:
+            dict: 模板详细信息
+        """
+        template = cls.get_template(template_name)
+        return {
+            'name': template_name,
+            'tasks': list(template.keys()),
+            'config': template
+        }
+    
+    @classmethod
+    def copy_template(cls, source_name, new_name, description=None):
+        """
+        复制模板，用于创建新模板
+        
+        Args:
+            source_name (str): 源模板名称
+            new_name (str): 新模板名称
+            description (str, optional): 新模板描述
+        
+        Returns:
+            bool: 是否成功复制
+        """
+        if source_name not in cls._task_templates:
+            return False
+        
+        # 深拷贝模板
+        import copy
+        cls._task_templates[new_name] = copy.deepcopy(cls._task_templates[source_name])
+        return True
+    
+    @classmethod
+    def update_task_config(cls, template_name, task_name, config_updates):
+        """
+        更新特定模板中特定任务的配置
+        
+        Args:
+            template_name (str): 模板名称
+            task_name (str): 任务名称
+            config_updates (dict): 要更新的配置
+        
+        Returns:
+            bool: 是否成功更新
+        """
+        if template_name not in cls._task_templates:
+            return False
+        
+        if task_name not in cls._task_templates[template_name]:
+            cls._task_templates[template_name][task_name] = {}
+        
+        # 更新配置
+        cls._task_templates[template_name][task_name].update(config_updates)
+        return True
+    
+    @classmethod
+    def delete_template(cls, template_name):
+        """
+        删除模板（不能删除default模板）
+        
+        Args:
+            template_name (str): 模板名称
+        
+        Returns:
+            bool: 是否成功删除
+        """
+        if template_name == 'default' or template_name not in cls._task_templates:
+            return False
+        
+        del cls._task_templates[template_name]
+        return True
 
     """
     AI Agent的预定义任务库

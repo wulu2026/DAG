@@ -1,27 +1,24 @@
 strict digraph analyze_data_example {
-	rankdir=TB size="8,10"
-	node [fontname=Arial fontsize=12 shape=rectangle style=filled]
-	edge [fontname=Arial fontsize=10]
-	collect_data [label="collect_data
-query
-sources
-data_points
-..." fillcolor="#90EE90"]
-	clean_data [label="clean_data
-query
-sources
-data_points
-..." fillcolor="#90EE90"]
-	analyze_data [label="analyze_data
-data_summary
-insights
-metrics" fillcolor="#90EE90"]
-	generate_report [label="generate_report
-content
-title
-generated_at
-..." fillcolor="#90EE90"]
-	collect_data -> clean_data
-	clean_data -> analyze_data
-	analyze_data -> generate_report
+	bgcolor=white dpi=150 fontname=Arial fontsize=14 rankdir=TB size="10,12"
+	node [fontname=Arial fontsize=12 margin="0.3,0.2" penwidth=2 shape=box style="rounded,filled"]
+	edge [arrowsize=0.8 color="#666666" fontname=Arial fontsize=10 penwidth=1.5]
+	collect_data [label=<<B>collect_data</B><BR/>query<BR/>
+sources<BR/>
+data_points<BR/>...> fillcolor="#4CAF50" fontcolor="#FFFFFF" tooltip="节点: collect_data
+状态: completed"]
+	clean_data [label=<<B>clean_data</B><BR/>query<BR/>
+sources<BR/>
+data_points<BR/>...> fillcolor="#4CAF50" fontcolor="#FFFFFF" tooltip="节点: clean_data
+状态: completed"]
+	analyze_data [label=<<B>analyze_data</B><BR/>data_summary<BR/>
+insights<BR/>
+metrics> fillcolor="#4CAF50" fontcolor="#FFFFFF" tooltip="节点: analyze_data
+状态: completed"]
+	generate_report [label=<<B>generate_report</B><BR/>content<BR/>
+title<BR/>
+generated_at<BR/>...> fillcolor="#4CAF50" fontcolor="#FFFFFF" tooltip="节点: generate_report
+状态: completed"]
+	collect_data -> clean_data [color="#666666"]
+	clean_data -> analyze_data [color="#666666"]
+	analyze_data -> generate_report [color="#666666"]
 }

@@ -1,16 +1,14 @@
 strict digraph learn_agent_architecture_example {
-	rankdir=TB size="8,10"
-	node [fontname=Arial fontsize=12 shape=rectangle style=filled]
-	edge [fontname=Arial fontsize=10]
-	learn_agent_architecture [label="learn_agent_architecture
-topic
-components
-architecture
-..." fillcolor="#90EE90"]
-	generate_report [label="generate_report
-content
-title
-generated_at
-..." fillcolor="#90EE90"]
-	learn_agent_architecture -> generate_report
+	bgcolor=white dpi=150 fontname=Arial fontsize=14 rankdir=TB size="10,12"
+	node [fontname=Arial fontsize=12 margin="0.3,0.2" penwidth=2 shape=box style="rounded,filled"]
+	edge [arrowsize=0.8 color="#666666" fontname=Arial fontsize=10 penwidth=1.5]
+	learn_agent_architecture [label=<<B>learn_agent_architecture</B><BR/>topic<BR/>
+components<BR/>
+architecture<BR/>...> fillcolor="#4CAF50" fontcolor="#FFFFFF" tooltip="节点: learn_agent_architecture
+状态: completed"]
+	generate_report [label=<<B>generate_report</B><BR/>content<BR/>
+title<BR/>
+generated_at<BR/>...> fillcolor="#4CAF50" fontcolor="#FFFFFF" tooltip="节点: generate_report
+状态: completed"]
+	learn_agent_architecture -> generate_report [color="#666666"]
 }
