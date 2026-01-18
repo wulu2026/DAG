@@ -17,10 +17,10 @@ data_summary
 insights
 metrics" fillcolor="#90EE90"]
 	generate_report [label="generate_report
-
-            # 用户行为分析 数据分析报告
-            
-        ..." fillcolor="#90EE90"]
+content
+title
+generated_at
+..." fillcolor="#90EE90"]
 	collect_data -> clean_data
 	clean_data -> analyze_data
 	analyze_data -> generate_report

@@ -1,5 +1,6 @@
 import time
 import random
+import os
 
 class TaskLibrary:
     """
@@ -31,8 +32,11 @@ class TaskLibrary:
                 'max_accuracy': 0.99
             },
             'generate_report': {
-                'delay': 1,
-                'message': '生成报告...'
+                'delay': 1.5,
+                'message': '生成报告...',
+                'default_save_to_file': True,
+                'default_output_dir': 'reports',
+                'default_file_extension': '.md'
             },
             'send_email': {
                 'delay': 0.8,
@@ -209,25 +213,34 @@ class TaskLibrary:
         return analysis
     
     @staticmethod
-    def generate_report(analysis, template_name='default'):
+    def generate_report(analysis, template_name='default', save_to_file=None, output_dir=None):
         """
         生成报告的任务
         
         Args:
             analysis (dict): 分析结果或学习结果
             template_name (str, optional): 模板名称，默认'default'
+            save_to_file (bool, optional): 是否保存为文件，None表示使用模板配置
+            output_dir (str, optional): 输出目录，None表示使用模板配置
         
         Returns:
-            str: 生成的报告
+            dict: 包含报告内容和存储信息的字典
         """
         # 获取模板配置
         config = TaskLibrary.get_task_config('generate_report', template_name)
+        
+        # 使用模板中的默认值（如果未提供）
+        if save_to_file is None:
+            save_to_file = config.get('default_save_to_file', False)
+        if output_dir is None:
+            output_dir = config.get('default_output_dir', 'reports')
         
         # 使用模板参数
         time.sleep(config.get('delay', 1))
         print(config.get('message', '生成报告...'))
         
         # 检查分析结果的类型
+        report_title = ""
         if 'data_summary' in analysis:
             # 数据分析结果
             query = analysis['data_summary']['query']
@@ -235,6 +248,7 @@ class TaskLibrary:
             sources = ', '.join(analysis['data_summary']['sources'])
             insights = analysis['insights']
             metrics = analysis['metrics']
+            report_title = query
             
             # 生成数据分析报告
             report = f"""
@@ -269,6 +283,7 @@ class TaskLibrary:
             key_concepts = analysis['key_concepts']
             sources = ', '.join(analysis['sources'])
             knowledge_level = analysis['knowledge_level']
+            report_title = topic
             
             # 生成学习报告
             report = f"""
@@ -294,6 +309,7 @@ class TaskLibrary:
             """
         else:
             # 默认报告格式
+            report_title = "任务报告"
             report = f"""
             # 任务报告
             
@@ -305,7 +321,47 @@ class TaskLibrary:
             {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}
             """
         
-        return report
+        # 准备返回结果
+        result = {
+            'content': report,
+            'title': report_title,
+            'generated_at': time.time(),
+            'save_status': 'not_saved'
+        }
+        
+        # 如果需要保存为文件
+        if save_to_file:
+            try:
+                # 创建输出目录
+                os.makedirs(output_dir, exist_ok=True)
+                
+                # 生成文件名
+                timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
+                safe_title = ''.join(c for c in report_title if c.isalnum() or c in ' -_')
+                filename = f"{safe_title}_{timestamp}.md"
+                filepath = os.path.join(output_dir, filename)
+                
+                # 写入文件
+                with open(filepath, 'w', encoding='utf-8') as f:
+                    f.write(report)
+                
+                result.update({
+                    'save_status': 'saved',
+                    'file_path': filepath,
+                    'file_size': os.path.getsize(filepath),
+                    'file_name': filename
+                })
+                
+                print(f"报告已保存到: {filepath}")
+            except Exception as e:
+                result.update({
+                    'save_status': 'error',
+                    'error_message': str(e)
+                })
+                
+                print(f"保存报告时出错: {e}")
+        
+        return result
     
     @staticmethod
     def send_email(report, recipient, template_name='default'):
@@ -313,7 +369,7 @@ class TaskLibrary:
         发送邮件的任务
         
         Args:
-            report (str): 要发送的报告
+            report (dict or str): 报告内容（字典格式或字符串）
             recipient (str): 收件人邮箱
             template_name (str, optional): 模板名称，默认'default'
         
@@ -326,6 +382,9 @@ class TaskLibrary:
         # 使用模板参数
         time.sleep(config.get('delay', 0.8))
         print(config.get('message', '发送邮件...').format(recipient=recipient))
+        
+        # 提取报告内容（兼容旧格式和新格式）
+        report_content = report['content'] if isinstance(report, dict) else report
         
         # 模拟发送邮件
         result = {

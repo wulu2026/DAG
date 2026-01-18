@@ -111,3 +111,42 @@ print(f"学习的架构: {result5['results']['learn_agent_architecture']['archit
 print("关键概念:")
 for i, concept in enumerate(result5['results']['learn_agent_architecture']['key_concepts'], 1):
     print(f"{i}. {concept}")
+
+# 示例6: 保存报告到文件
+print("\n" + "=" * 60)
+print("示例6: 保存报告到文件")
+print("=" * 60)
+
+request6 = {
+    'type': 'analyze_data',
+    'params': {
+        'query': '客户满意度分析'
+    }
+}
+
+result6 = agent.process_request(request6, parallel=True, save_report=True, report_output_dir='custom_reports')
+print("\n最终结果:")
+print(f"报告生成状态: {result6['results']['generate_report']['save_status']}")
+if result6['results']['generate_report']['save_status'] == 'saved':
+    print(f"报告文件路径: {result6['results']['generate_report']['file_path']}")
+    print(f"报告文件大小: {result6['results']['generate_report']['file_size']} 字节")
+
+# 示例7: 学习任务并保存报告
+print("\n" + "=" * 60)
+print("示例7: 学习任务并保存报告")
+print("=" * 60)
+
+request7 = {
+    'type': 'learn_agent_architecture',
+    'params': {
+        'topic': 'AI Agent架构设计模式',
+        'template_name': 'default'
+    }
+}
+
+result7 = agent.process_request(request7, parallel=True, save_report=True)
+print("\n最终结果:")
+print(f"学习主题: {result7['results']['learn_agent_architecture']['topic']}")
+print(f"报告生成状态: {result7['results']['generate_report']['save_status']}")
+if result7['results']['generate_report']['save_status'] == 'saved':
+    print(f"报告文件路径: {result7['results']['generate_report']['file_path']}")

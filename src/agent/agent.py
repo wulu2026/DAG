@@ -23,7 +23,7 @@ class AIAgent:
         self.name = name
         self.task_library = TaskLibrary()
     
-    def process_request(self, request, parallel=True, visualize=False, visualize_filename=None):
+    def process_request(self, request, parallel=True, visualize=False, visualize_filename=None, save_report=False, report_output_dir=None):
         """
         处理用户请求
         
@@ -32,6 +32,8 @@ class AIAgent:
             parallel (bool, optional): 是否并行执行任务，默认True
             visualize (bool, optional): 是否可视化DAG，默认False
             visualize_filename (str, optional): 可视化文件名，默认None
+            save_report (bool, optional): 是否保存报告到文件，默认False
+            report_output_dir (str, optional): 报告输出目录，默认None
         
         Returns:
             dict: 处理结果
@@ -41,6 +43,10 @@ class AIAgent:
         # 解析请求
         request_type = request.get('type', 'analyze_data')
         params = request.get('params', {})
+        
+        # 传递存储参数给params
+        params['save_report'] = save_report
+        params['report_output_dir'] = report_output_dir
         
         # 根据请求类型构建DAG
         if request_type == 'analyze_data':
@@ -118,7 +124,11 @@ class AIAgent:
             'generate_report',
             data={
                 'func': self.task_library.generate_report,
-                'args': (None,)  # 将在执行时从依赖节点获取
+                'args': (None,),  # 将在执行时从依赖节点获取
+                'kwargs': {
+                    'save_to_file': params.get('save_report', None),
+                    'output_dir': params.get('report_output_dir', None)
+                }
             }
         )
         
@@ -174,7 +184,11 @@ class AIAgent:
             'generate_report',
             data={
                 'func': self.task_library.generate_report,
-                'args': (None,)  # 将在执行时从依赖节点获取
+                'args': (None,),  # 将在执行时从依赖节点获取
+                'kwargs': {
+                    'save_to_file': params.get('save_report', None),
+                    'output_dir': params.get('report_output_dir', None)
+                }
             }
         )
         
@@ -232,7 +246,11 @@ class AIAgent:
             'generate_report',
             data={
                 'func': self.task_library.generate_report,
-                'args': (None, template_name)  # 将在执行时从依赖节点获取
+                'args': (None, template_name),  # 将在执行时从依赖节点获取
+                'kwargs': {
+                    'save_to_file': params.get('save_report', None),
+                    'output_dir': params.get('report_output_dir', None)
+                }
             }
         )
         
