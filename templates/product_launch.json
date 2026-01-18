@@ -1,0 +1,39 @@
+{
+  "name": "product_launch",
+  "description": "产品发布专用模板，用于发布准备、计划执行和发布后分析",
+  "tasks": {
+    "collect_data": {
+      "delay": 2.5,
+      "message": "收集产品发布信息...",
+      "sources": ["功能清单", "营销材料", "测试报告", "发布计划"]
+    },
+    "clean_data": {
+      "delay": 1.2,
+      "message": "整理发布准备数据...",
+      "min_duplicates": 3,
+      "max_duplicates": 30,
+      "min_invalid": 1,
+      "max_invalid": 10
+    },
+    "analyze_data": {
+      "delay": 3.0,
+      "message": "分析发布风险和准备情况...",
+      "min_insights": 10,
+      "max_insights": 20,
+      "min_accuracy": 0.9,
+      "max_accuracy": 0.98
+    },
+    "generate_report": {
+      "delay": 2.5,
+      "message": "生成产品发布报告...",
+      "default_save_to_file": true,
+      "default_output_dir": "launch_reports",
+      "default_file_extension": ".md"
+    },
+    "send_email": {
+      "delay": 1.0,
+      "message": "发送产品发布报告给相关团队...",
+      "default_subject": "产品发布准备与执行报告"
+    }
+  }
+}

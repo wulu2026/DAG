@@ -1,0 +1,39 @@
+{
+  "name": "requirements_analysis",
+  "description": "需求分析专用模板，用于收集、整理和分析产品需求",
+  "tasks": {
+    "collect_data": {
+      "delay": 2.5,
+      "message": "收集产品需求...",
+      "sources": ["用户反馈", "业务部门", "团队讨论", "市场调研"]
+    },
+    "clean_data": {
+      "delay": 1.2,
+      "message": "整理和清洗需求...",
+      "min_duplicates": 5,
+      "max_duplicates": 50,
+      "min_invalid": 2,
+      "max_invalid": 20
+    },
+    "analyze_data": {
+      "delay": 3.0,
+      "message": "分析需求优先级和可行性...",
+      "min_insights": 10,
+      "max_insights": 20,
+      "min_accuracy": 0.9,
+      "max_accuracy": 0.99
+    },
+    "generate_report": {
+      "delay": 2.5,
+      "message": "生成需求分析报告...",
+      "default_save_to_file": true,
+      "default_output_dir": "requirements_reports",
+      "default_file_extension": ".md"
+    },
+    "send_email": {
+      "delay": 1.0,
+      "message": "发送需求分析报告给相关团队...",
+      "default_subject": "产品需求分析报告"
+    }
+  }
+}

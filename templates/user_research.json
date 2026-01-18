@@ -1,0 +1,39 @@
+{
+  "name": "user_research",
+  "description": "用户研究专用模板，用于用户访谈、调研分析和用户画像创建",
+  "tasks": {
+    "collect_data": {
+      "delay": 3.0,
+      "message": "收集用户研究数据...",
+      "sources": ["用户访谈", "问卷调查", "行为分析", "用户反馈"]
+    },
+    "clean_data": {
+      "delay": 1.5,
+      "message": "整理用户研究数据...",
+      "min_duplicates": 3,
+      "max_duplicates": 30,
+      "min_invalid": 1,
+      "max_invalid": 15
+    },
+    "analyze_data": {
+      "delay": 3.5,
+      "message": "分析用户行为和需求...",
+      "min_insights": 12,
+      "max_insights": 25,
+      "min_accuracy": 0.92,
+      "max_accuracy": 0.98
+    },
+    "generate_report": {
+      "delay": 3.0,
+      "message": "生成用户研究报告...",
+      "default_save_to_file": true,
+      "default_output_dir": "user_research_reports",
+      "default_file_extension": ".md"
+    },
+    "send_email": {
+      "delay": 1.0,
+      "message": "发送用户研究报告给产品团队...",
+      "default_subject": "用户研究分析报告"
+    }
+  }
+}

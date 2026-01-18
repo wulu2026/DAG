@@ -1,0 +1,39 @@
+{
+  "name": "product_planning",
+  "description": "产品规划专用模板，用于路线图制定、功能优先级和资源分配",
+  "tasks": {
+    "collect_data": {
+      "delay": 3.0,
+      "message": "收集产品规划数据...",
+      "sources": ["业务目标", "用户需求", "市场趋势", "技术可行性"]
+    },
+    "clean_data": {
+      "delay": 1.5,
+      "message": "整理产品规划信息...",
+      "min_duplicates": 5,
+      "max_duplicates": 40,
+      "min_invalid": 2,
+      "max_invalid": 15
+    },
+    "analyze_data": {
+      "delay": 4.0,
+      "message": "制定产品路线图和功能优先级...",
+      "min_insights": 10,
+      "max_insights": 25,
+      "min_accuracy": 0.9,
+      "max_accuracy": 0.99
+    },
+    "generate_report": {
+      "delay": 3.0,
+      "message": "生成产品规划报告...",
+      "default_save_to_file": true,
+      "default_output_dir": "product_plans",
+      "default_file_extension": ".md"
+    },
+    "send_email": {
+      "delay": 1.0,
+      "message": "发送产品规划报告给相关团队...",
+      "default_subject": "产品规划与路线图"
+    }
+  }
+}

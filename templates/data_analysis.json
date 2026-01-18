@@ -1,0 +1,39 @@
+{
+  "name": "data_analysis",
+  "description": "数据分析专用模板，用于用户行为分析、转化率分析和性能指标监控",
+  "tasks": {
+    "collect_data": {
+      "delay": 3.0,
+      "message": "收集产品数据...",
+      "sources": ["用户行为数据", "业务指标", "系统日志", "A/B测试结果"]
+    },
+    "clean_data": {
+      "delay": 2.0,
+      "message": "清洗和预处理数据...",
+      "min_duplicates": 5,
+      "max_duplicates": 50,
+      "min_invalid": 3,
+      "max_invalid": 20
+    },
+    "analyze_data": {
+      "delay": 4.0,
+      "message": "分析用户行为和业务指标...",
+      "min_insights": 12,
+      "max_insights": 25,
+      "min_accuracy": 0.95,
+      "max_accuracy": 0.99
+    },
+    "generate_report": {
+      "delay": 3.0,
+      "message": "生成数据分析报告...",
+      "default_save_to_file": true,
+      "default_output_dir": "data_analysis_reports",
+      "default_file_extension": ".md"
+    },
+    "send_email": {
+      "delay": 1.0,
+      "message": "发送数据分析报告给产品团队...",
+      "default_subject": "产品数据分析报告"
+    }
+  }
+}

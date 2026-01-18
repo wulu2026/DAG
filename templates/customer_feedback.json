@@ -1,0 +1,39 @@
+{
+  "name": "customer_feedback",
+  "description": "客户反馈专用模板，用于收集、分析和生成改进建议",
+  "tasks": {
+    "collect_data": {
+      "delay": 3.0,
+      "message": "收集客户反馈...",
+      "sources": ["客服工单", "用户评论", "社交媒体", "满意度调查"]
+    },
+    "clean_data": {
+      "delay": 1.5,
+      "message": "整理和分类客户反馈...",
+      "min_duplicates": 5,
+      "max_duplicates": 50,
+      "min_invalid": 2,
+      "max_invalid": 15
+    },
+    "analyze_data": {
+      "delay": 3.5,
+      "message": "分析客户反馈趋势和问题...",
+      "min_insights": 12,
+      "max_insights": 25,
+      "min_accuracy": 0.9,
+      "max_accuracy": 0.98
+    },
+    "generate_report": {
+      "delay": 2.5,
+      "message": "生成客户反馈分析报告...",
+      "default_save_to_file": true,
+      "default_output_dir": "feedback_reports",
+      "default_file_extension": ".md"
+    },
+    "send_email": {
+      "delay": 1.0,
+      "message": "发送客户反馈分析报告给相关团队...",
+      "default_subject": "客户反馈分析与改进建议"
+    }
+  }
+}
